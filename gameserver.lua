@@ -17,7 +17,7 @@ local shouldCountDown = true
 local countdownTimer = 15
 
 local commands = {";ec", ";cock", ";raymonf", ";gage", ";minecraft", ";suicide", ";energycell", ";cancer", ";bleach", ";sex", ";kms", ";death", ";robloxsuckingpenis", ";korone", ";liam", ";amir", ";brickplanet", ";polytoriacrashed", ";wm"}
-local elivsound = 7569
+local elivSound = 7569
 local ecSounds = {
 	1991,
 	1993,
