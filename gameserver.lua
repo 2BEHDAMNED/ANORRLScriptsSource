@@ -15,6 +15,37 @@ settings().Network.ExperimentalPhysicsEnabled = true
 settings().Network.WaitingForCharacterLogRate = 100
 pcall(function() settings().Diagnostics:LegacyScriptMode() end)
 
+coroutine_renewlease = coroutine.create(function()
+	while wait(30) do
+		game:HttpGet(url .. "/api/gameservers/renewlease?jobID="..jobId .. "&access="..access)
+	end
+end)
+
+coroutine_heartbeat = coroutine.create(function()
+	-- Heartbeat --
+	while wait(1) do
+		if shouldCountDown then
+			countdownTimer = countdownTimer - 1
+
+			if shouldCountDown and countdownTimer <= 0 then
+				warn("Server is being shutdown!")
+				if isCloudEdit then
+					warn("Saving place!")
+					game:Save(saveUrl)
+					-- yield so that file save happens in the heartbeat thread
+					wait()
+				end
+				game:HttpGet(url .. "/api/gameservers/close?jobID="..jobId .. "&access="..access)
+				break
+			end
+		end
+		if not isCloudEdit and workspace.FilteringEnabled ~= FilteringEnabled then
+			warn("Something tried to change FilteringEnabled! Reverting...")
+			workspace.FilteringEnabled = FilteringEnabled
+		end
+	end
+end)
+
 local shouldCountDown = true
 local countdownTimer = 15
 
@@ -456,6 +487,9 @@ if placeId ~= nil and url ~= nil and ((not onlyCallGameLoadWhenInRccWithAccessKe
 	
 	-- load the game
 	game:Load(url .. "/asset/?id=" .. placeId)
+	
+	coroutine.resume(coroutine_renewlease)
+	coroutine.resume(coroutine_heartbeat)
 end
 
 -- Now start the connection
@@ -534,27 +568,4 @@ if not isCloudEdit then
 	-- filteringenabled warning
 
 	Game:GetService("RunService"):Run()
-end
-
--- Heartbeat --
-while wait(1) do
-	if shouldCountDown then
-		countdownTimer = countdownTimer - 1
-
-		if shouldCountDown and countdownTimer <= 0 then
-			warn("Server is being shutdown!")
-			if isCloudEdit then
-				warn("Saving place!")
-				game:Save(saveUrl)
-				-- yield so that file save happens in the heartbeat thread
-				wait()
-			end
-			game:HttpGet(url .. "/api/gameservers/close?jobID="..jobId .. "&access="..access)
-			break
-		end
-	end
-	if not isCloudEdit and workspace.FilteringEnabled ~= FilteringEnabled then
-		warn("Something tried to change FilteringEnabled! Reverting...")
-		workspace.FilteringEnabled = FilteringEnabled
-	end
 end
