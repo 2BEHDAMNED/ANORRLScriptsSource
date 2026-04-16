@@ -474,6 +474,10 @@ game:GetService("Players").PlayerRemoving:connect(function(player)
 				wait()
 			end
 			
+			
+			coroutine.close(coroutine_renewlease)
+			coroutine.close(coroutine_heartbeat)
+			
 			warn("Server is being shutdown!")
 			game:HttpGet(url .. "/api/gameservers/close?jobID="..jobId .. "&access="..access)
 		end
