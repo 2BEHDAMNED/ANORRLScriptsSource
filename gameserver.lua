@@ -1,6 +1,6 @@
 -- Start Game Script Arguments
-local placeId, port, sleeptime, access, timeout, machineAddress, baseUrl, libraryRegistrationScriptAssetID, universeId, assetGameSubdomain, protocol, jobId, testing =
-{placeId}, {port}, 10, "{accesskey}", 10, "37.114.46.52", "lambda.cam", 37801172, {placeId}, "arl", "http://", "{jobId}", false
+local placeId, port, sleeptime, access, timeout, baseUrl, libraryRegistrationScriptAssetID, universeId, assetGameSubdomain, protocol, jobId, testing =
+{placeId}, {port}, 10, "{accesskey}", 10, "lambda.cam", 37801172, {placeId}, "arl", "http://", "{jobId}", false
 
 -----------------------------------"CUSTOM" SHARED CODE----------------------------------
 local TeleportService = game:GetService("TeleportService")
